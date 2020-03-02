@@ -1,40 +1,65 @@
 package sms
 
 import (
-	"net/http"
 	"fmt"
-	"io/ioutil"
-	"strconv"
-	"github.com/pkg/errors"
-	"iufan/common/utils"
-	"strings"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/dysmsapi"
+	utils "github.com/iufansh/iutils"
+	"github.com/pkg/errors"
+	"io/ioutil"
+	"net/http"
+	"strconv"
+	"strings"
 )
 
 type SmsParam struct {
-	Api    string
-	Uid    string
-	Key    string
-	Mobile string
-	Text   string
+	Api      string
+	Uid      string
+	Key      string
+	SignName string
+	Mobile   string
+	Text     string
 }
 
 func SendSms(p SmsParam) (num int64, err error) {
 	switch p.Api {
 	case "1":
-		return SendWebChinese(p.Uid, p.Key, p.Mobile, p.Text)
+		return SendWebChinese(p)
 	default:
-		return 0, errors.New("No match api")
+		return SendAliyunSms(p)
 	}
 	return
 }
 
-func SendWebChinese(uid string, key string, smsMob string, smsText string) (num int64, err error) {
-	if uid == "" || key == "" || smsMob == "" || smsText == "" {
+func SendAliyunSms(sender SmsParam) (num int64, err error) {
+	client, err := dysmsapi.NewClientWithAccessKey("cn-hangzhou", sender.Uid, sender.Key)
+
+	request := dysmsapi.CreateSendSmsRequest()
+	request.Scheme = "https"
+
+	request.PhoneNumbers = sender.Mobile
+	request.SignName = sender.SignName
+	request.TemplateCode = sender.Api
+	request.TemplateParam = `{"code":"` + sender.Text + `"}`
+
+	response, err := client.SendSms(request)
+	if err != nil {
+		return 0, err
+	}
+	if response.Code == "OK" {
+		num = 1
+		return
+	}
+	return 0, errors.New(response.Message)
+}
+
+func SendWebChinese(sender SmsParam) (num int64, err error) {
+	if sender.Uid == "" || sender.Key == "" || sender.Mobile == "" || sender.Text == "" {
 		err = errors.New("Params empty")
 		return
 	}
-	reqUrl := fmt.Sprintf("http://utf8.api.smschinese.cn/?Uid=%s&KeyMD5=%s&smsMob=%s&smsText=%s", uid, strings.ToUpper(utils.Md5(key)), smsMob, smsText)
+
+	smsText := fmt.Sprintf("【%s】验证码：%s，请勿泄露于他人，如非本人操作，请忽略本短信。", sender.SignName, sender.Text)
+	reqUrl := fmt.Sprintf("http://utf8.api.smschinese.cn/?Uid=%s&KeyMD5=%s&smsMob=%s&smsText=%s", sender.Uid, strings.ToUpper(utils.Md5(sender.Key)), sender.Mobile, smsText)
 	var req *http.Request
 	req, err = http.NewRequest(http.MethodGet, reqUrl, nil)
 	if err != nil {
@@ -59,25 +84,4 @@ func SendWebChinese(uid string, key string, smsMob string, smsText string) (num 
 		}
 	}
 	return
-}
-
-func SendAliyunSms(accessKeyId string, accessSecret string, smsMob string, smsText string) (num int64, err error) {
-	client, err := dysmsapi.NewClientWithAccessKey("cn-hangzhou", accessKeyId, accessSecret)
-
-	request := dysmsapi.CreateSendSmsRequest()
-	request.Scheme = "https"
-
-	request.PhoneNumbers = smsMob
-	request.SignName = "xx公司"
-	request.TemplateCode = "tempid1"
-
-	response, err := client.SendSms(request)
-	if err != nil {
-		return
-	}
-	if response.Code == "OK" {
-		num = 1
-		return
-	}
-	return 0, errors.New(response.Message)
 }

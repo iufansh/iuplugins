@@ -2,7 +2,7 @@ package memory
 
 import (
 	"errors"
-	"iufan/cplugins/queue"
+	"iueun/cplugins/queue"
 
 	"fmt"
 

@@ -5,7 +5,7 @@ import (
 	"time"
 	"encoding/base32"
 	"fmt"
-	"iufan/common/utils"
+	utils "github.com/iufansh/iutils"
 )
 
 func GetGAuthQr(user string) (ok bool, secret string, qrCode string) {

@@ -1,10 +1,10 @@
-package license
+package iuauth
 
 import (
 	"fmt"
 	"strconv"
 	"net"
-	"iufan/common/utils"
+	utils "github.com/iufansh/iutils"
 	"strings"
 	"math"
 	"time"

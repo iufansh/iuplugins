@@ -9,7 +9,7 @@ import (
 	"encoding/base64"
 	"crypto/sha256"
 	"crypto/rand"
-	"iufan/common/utils"
+	utils "github.com/iufansh/iutils"
 	"github.com/astaxie/beego"
 )
 
