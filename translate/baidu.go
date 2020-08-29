@@ -14,8 +14,8 @@ import (
 )
 
 //申请的信息
-var appID = "20200423000427459"
-var apiSecret = "VTTyz8VNzaw6tKQA87KG"
+//var appID = ""
+//var apiSecret = ""
 
 //百度翻译api接口
 var Url = "http://api.fanyi.baidu.com/api/trans/vip/translate"
@@ -45,13 +45,14 @@ func newTranslateModeler(param TransParam) apiParam {
 		Tts:  "0",
 		Dict: "0",
 	}
-	tran.Appid = appID
+	tran.Appid = param.Appid
 	tran.Salt = strconv.Itoa(time.Now().Second())
-	content := appID + param.Query + tran.Salt + apiSecret
+	content := param.Appid + param.Query + tran.Salt + param.ApiSecret
 	sign := sumString(content) //计算sign值
 	tran.Sign = sign
 	return tran
 }
+
 func (tran apiParam) toValues() url.Values {
 	values := url.Values{
 		"q":     {tran.Q},
@@ -110,23 +111,40 @@ func Baidu(param TransParam) (transResult TransResult, err error) {
 		DstTts: baiduResult.TransResult[0].DstTts,
 	}
 	var bdDict baiduDict
-	if err = json.Unmarshal([]byte(baiduResult.TransResult[0].Dict), &bdDict); err != nil {
-		return
-	}
-	transResult.Lang = bdDict.Lang
-	if bdDict.Lang == "1" {
-		var enDict baiduEnDict
-		if err = json.Unmarshal([]byte(baiduResult.TransResult[0].Dict), &enDict); err != nil {
-			return
+	if baiduResult.TransResult[0].Dict != "" {
+		if err = json.Unmarshal([]byte(baiduResult.TransResult[0].Dict), &bdDict); err != nil {
+			// 格式不对，翻译失败
+			fmt.Println("Baidu translate err0:", err)
+			err = nil
 		}
-		transResult.MeansEn = enDict.WordResult.SimpleMeans
-	} else if bdDict.Lang == "0" {
-		var zhDict baiduZhDict
-		if err = json.Unmarshal([]byte(baiduResult.TransResult[0].Dict), &zhDict); err != nil {
-			return
+		if bdDict.Lang == "1" {
+			var enDict baiduEnDict
+			if err = json.Unmarshal([]byte(baiduResult.TransResult[0].Dict), &enDict); err != nil {
+				// 格式不对，翻译失败
+				fmt.Println("Baidu translate err1:", err)
+				err = nil
+			}
+			transResult.MeansEn = enDict.WordResult.SimpleMeans
+		} else if bdDict.Lang == "0" {
+			var zhDict baiduZhDict
+			if err = json.Unmarshal([]byte(baiduResult.TransResult[0].Dict), &zhDict); err != nil {
+				// 格式不对，翻译失败
+				fmt.Println("Baidu translate err2:", err)
+				err = nil
+			}
+			transResult.MeansZh = zhDict.WordResult.SimpleMeans
 		}
-		transResult.MeansZh = zhDict.WordResult.SimpleMeans
 	}
+	if bdDict.Lang == "" {
+		if transResult.From == "zh" {
+			transResult.Lang = "0"
+		} else {
+			transResult.Lang = "1"
+		}
+	} else {
+		transResult.Lang = bdDict.Lang
+	}
+
 	return
 }
 
@@ -191,7 +209,7 @@ type SimpleMeansEn struct {
 		Parts []struct {
 			Part  string   `json:"part,omitempty"`
 			Means []string `json:"means,omitempty"`
-		}
+		} `json:"parts,omitempty"`
 	} `json:"symbols,omitempty"`
 }
 
@@ -209,7 +227,7 @@ type SimpleMeansZh struct {
 				WordMean string   `json:"word_mean,omitempty"`
 				Means    []string `json:"means,omitempty"`
 			} `json:"means,omitempty"`
-		}
+		} `json:"parts,omitempty"`
 	} `json:"symbols,omitempty"`
 }
 
