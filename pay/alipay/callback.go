@@ -1,18 +1,17 @@
 package alipay
 
 import (
-	"fmt"
-	"net/http"
-	"errors"
-	utils "github.com/iufansh/iutils"
-	"sort"
-	"github.com/astaxie/beego"
-	"encoding/base64"
-	"crypto/sha256"
-	"crypto/rsa"
 	"crypto"
+	"crypto/rsa"
+	"crypto/sha256"
+	"encoding/base64"
+	"errors"
+	"fmt"
 	"github.com/iufansh/iuplugins/pay/common"
+	utils "github.com/iufansh/iutils"
+	"net/http"
 	"net/url"
+	"sort"
 	"strings"
 )
 
@@ -44,14 +43,12 @@ func CallbackAlipay(w http.ResponseWriter, r *http.Request, getKey GetAlipayPubK
 	if m["sign_type"] != "RSA2" {
 		res.Code = 2
 		res.Msg = "加密类型不是RSA2"
-		beego.Error("alipay notice sign type not rsa2, is", m["sign_type"])
 		return errors.New("alipay notice sign type not rsa2")
 	}
 	signByte, err := base64.StdEncoding.DecodeString(m["sign"])
 	if err != nil {
 		res.Code = 2
 		res.Msg = "签名base64转化失败"
-		beego.Error("alipay notice err1:", err)
 		return err
 	}
 	s := sha256.New()
@@ -60,7 +57,6 @@ func CallbackAlipay(w http.ResponseWriter, r *http.Request, getKey GetAlipayPubK
 	if err != nil {
 		res.Code = 2
 		res.Msg = "签名sha256转化失败"
-		beego.Error("alipay notice err2:", err)
 		return err
 	}
 	hash := s.Sum(nil)
@@ -69,7 +65,6 @@ func CallbackAlipay(w http.ResponseWriter, r *http.Request, getKey GetAlipayPubK
 	if err != nil {
 		res.Code = 2
 		res.Msg = "验签失败"
-		beego.Error("alipay notice verify err,", err)
 		return err
 	}
 

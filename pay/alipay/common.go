@@ -1,16 +1,15 @@
 package alipay
 
 import (
+	"crypto"
+	"crypto/rand"
+	"crypto/sha256"
+	"encoding/base64"
 	"fmt"
+	utils "github.com/iufansh/iutils"
+	"net/url"
 	"sort"
 	"strings"
-	"crypto"
-	"net/url"
-	"encoding/base64"
-	"crypto/sha256"
-	"crypto/rand"
-	utils "github.com/iufansh/iutils"
-	"github.com/astaxie/beego"
 )
 
 // GenSign 产生签名
@@ -23,7 +22,6 @@ func GenRsaSha256Sign(priKey string, m map[string]string) string {
 	}
 	sort.Strings(data)
 	signData := strings.Join(data, "&")
-	beego.Info(signData)
 	s := sha256.New()
 	_, err := s.Write([]byte(signData))
 	if err != nil {
@@ -39,7 +37,6 @@ func GenRsaSha256Sign(priKey string, m map[string]string) string {
 }
 // GenSign 产生签名
 func GenStrRsaSha256Sign(priKey string, signData string) string {
-	beego.Info(signData)
 	s := sha256.New()
 	_, err := s.Write([]byte(signData))
 	if err != nil {

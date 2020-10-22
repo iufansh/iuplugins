@@ -1,24 +1,23 @@
 package alipay
 
 import (
-	"github.com/astaxie/beego"
-	"github.com/parnurzeal/gorequest"
-	"encoding/json"
-	"net/http"
-	"net/url"
-	"fmt"
-	"sort"
-	utils "github.com/iufansh/iutils"
-	"encoding/base64"
-	"crypto/sha256"
-	"strings"
-	"encoding/xml"
-	"crypto/rsa"
-	"crypto"
 	"bytes"
-	"io"
+	"crypto"
+	"crypto/rsa"
+	"crypto/sha256"
+	"encoding/base64"
+	"encoding/json"
+	"encoding/xml"
+	"fmt"
+	utils "github.com/iufansh/iutils"
+	"github.com/parnurzeal/gorequest"
 	"github.com/pkg/errors"
 	"golang.org/x/net/html/charset"
+	"io"
+	"net/http"
+	"net/url"
+	"sort"
+	"strings"
 )
 
 func CheckService(w http.ResponseWriter, r *http.Request, getAliPubKeyAndDepPriKey func(appId string) (string, string), getDepPubKey func(appId string) string) error {
@@ -95,19 +94,15 @@ func OrderSettle(baseParam BaseParam, settleParam OrderSettleParam, priKey strin
 	bpMap["sign"] = GenRsaSha256Sign(priKey, bpMap)
 
 	payUrl := ToURL("https://openapi.alipay.com/gateway.do", bpMap)
-	beego.Info("alipay OrderSettle url：", payUrl)
 	_, body, errs := gorequest.New().Get(payUrl).End()
 	if errs != nil && len(errs) > 0 {
 		msg = "分账请求异常1"
-		beego.Error("alipay OrderSettle err:", errs)
 		return
 	}
 
-	beego.Info("alipay OrderSettle response:", body)
 	var res OrderSettleResp
 	if err := json.Unmarshal([]byte(body), &res); err != nil {
 		msg = "分账请求异常2"
-		beego.Info("alipay unmarshal json err:", err)
 		return
 	}
 	if res.Data.Code == "10000" && res.Data.TradeNo != "" {

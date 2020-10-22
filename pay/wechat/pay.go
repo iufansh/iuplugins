@@ -1,11 +1,11 @@
 package wechat
 
 import (
+	"encoding/json"
 	"encoding/xml"
 	"errors"
-	"encoding/json"
-	"github.com/parnurzeal/gorequest"
 	"fmt"
+	"github.com/parnurzeal/gorequest"
 )
 
 // Pay 支付
@@ -20,7 +20,7 @@ func PayUnifiedOrder(order *WxUnifiedOrder, md5Key string) (*WxUnifiedOrderResp,
 		return nil, errors.New("WxUnifiedOrder Unmarshal json error")
 	}
 
-	sign ,err := WechatGenSign(md5Key,m)
+	sign, err := WechatGenSign(md5Key, m)
 	if err != nil {
 		return nil, err
 	}
@@ -52,7 +52,7 @@ func PayUnifiedOrder(order *WxUnifiedOrder, md5Key string) (*WxUnifiedOrderResp,
 		return nil, errors.New("WxUnifiedOrder Unmarshal resp json error2")
 	}
 
-	sign2 ,err := WechatGenSign(md5Key,m2)
+	sign2, err := WechatGenSign(md5Key, m2)
 	if err != nil {
 		return nil, err
 	}
