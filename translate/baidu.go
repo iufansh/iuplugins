@@ -4,7 +4,6 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"encoding/json"
-	"fmt"
 	"github.com/pkg/errors"
 	"io/ioutil"
 	"net/http"
@@ -88,8 +87,8 @@ func Baidu(param TransParam) (transResult TransResult, err error) {
 	if err != nil {
 		return
 	}
-	txt := string(body)
-	fmt.Println(txt)
+	// txt := string(body)
+	// fmt.Println(txt)
 	var baiduResult baiduResult
 	if err = json.Unmarshal(body, &baiduResult); err != nil {
 		return
@@ -114,14 +113,14 @@ func Baidu(param TransParam) (transResult TransResult, err error) {
 	if baiduResult.TransResult[0].Dict != "" {
 		if err = json.Unmarshal([]byte(baiduResult.TransResult[0].Dict), &bdDict); err != nil {
 			// 格式不对，翻译失败
-			fmt.Println("Baidu translate err0:", err)
+			//fmt.Println("Baidu translate err0:", err)
 			err = nil
 		}
 		if bdDict.Lang == "1" {
 			var enDict baiduEnDict
 			if err = json.Unmarshal([]byte(baiduResult.TransResult[0].Dict), &enDict); err != nil {
 				// 格式不对，翻译失败
-				fmt.Println("Baidu translate err1:", err)
+				//fmt.Println("Baidu translate err1:", err)
 				err = nil
 			}
 			transResult.MeansEn = enDict.WordResult.SimpleMeans
@@ -129,7 +128,7 @@ func Baidu(param TransParam) (transResult TransResult, err error) {
 			var zhDict baiduZhDict
 			if err = json.Unmarshal([]byte(baiduResult.TransResult[0].Dict), &zhDict); err != nil {
 				// 格式不对，翻译失败
-				fmt.Println("Baidu translate err2:", err)
+				//fmt.Println("Baidu translate err2:", err)
 				err = nil
 			}
 			transResult.MeansZh = zhDict.WordResult.SimpleMeans
