@@ -15,6 +15,7 @@ import (
 )
 
 type SmsParam struct {
+	RegionId string
 	Api      string
 	Uid      string
 	Key      string
@@ -66,7 +67,10 @@ func SendBaiduSms(sender SmsParam) (num int64, err error) {
 }
 
 func SendAliyunSms(sender SmsParam) (num int64, err error) {
-	client, err := dysmsapi.NewClientWithAccessKey("cn-hangzhou", sender.Uid, sender.Key)
+	if sender.RegionId == "" {
+		sender.RegionId = "cn-hangzhou" // 默认杭州
+	}
+	client, err := dysmsapi.NewClientWithAccessKey(sender.RegionId, sender.Uid, sender.Key)
 
 	request := dysmsapi.CreateSendSmsRequest()
 	request.Scheme = "https"
