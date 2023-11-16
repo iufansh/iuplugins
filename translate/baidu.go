@@ -41,8 +41,8 @@ func newTranslateModeler(param TransParam) apiParam {
 		Q:    param.Query,
 		From: param.From,
 		To:   param.To,
-		Tts:  "0",
-		Dict: "0",
+		Tts:  param.TTs,
+		Dict: param.Dict,
 	}
 	tran.Appid = param.Appid
 	tran.Salt = strconv.Itoa(time.Now().Second())
@@ -153,6 +153,8 @@ type TransParam struct {
 	Query     string
 	From      string
 	To        string
+	TTs string // 是否显示语音合成资源 0-显示1-不显示
+	Dict string // 是否显示词典资源 0-显示1-不显示
 }
 
 type baiduResult struct {
