@@ -1,9 +1,10 @@
 package kodo
 
 import (
-	"github.com/qiniu/api.v7/auth/qbox"
-	"github.com/qiniu/api.v7/storage"
 	"time"
+
+	"github.com/qiniu/go-sdk/v7/auth/qbox"
+	"github.com/qiniu/go-sdk/v7/storage"
 )
 
 func DownloadPublic(domain, key string) string {
