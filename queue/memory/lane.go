@@ -2,7 +2,8 @@ package memory
 
 import (
 	"errors"
-	"iuplugins/queue"
+
+	"github.com/iufansh/iuplugins/queue"
 
 	"fmt"
 

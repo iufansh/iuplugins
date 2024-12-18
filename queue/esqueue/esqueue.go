@@ -3,9 +3,10 @@ package esqueue
 import (
 	"encoding/json"
 	"errors"
-	"iuplugins/queue"
 	"runtime"
 	"sync/atomic"
+
+	"github.com/iufansh/iuplugins/queue"
 )
 
 type esCache struct {

@@ -12,7 +12,7 @@ import (
 	"sort"
 	"strings"
 
-	"iuplugins/pay/common"
+	"github.com/iufansh/iuplugins/pay/common"
 
 	utils "github.com/iufansh/iutils"
 )
