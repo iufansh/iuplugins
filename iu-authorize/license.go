@@ -11,7 +11,7 @@ import (
 	utils "github.com/iufansh/iutils"
 )
 
-const defaultSalt  = "licgo"
+const defaultSalt = "licgo"
 
 func GetMachineData(salts ...string) []string {
 	var salt = defaultSalt
@@ -32,7 +32,7 @@ func GetMachineData(salts ...string) []string {
 			continue
 		}
 		s := fmt.Sprintf("%d%s%s", netInterface.Index, salt, macAddr)
-		data = append(data, utils.Md5(s, utils.Pubsalt) + "(" + netInterface.Name + ")")
+		data = append(data, utils.Md5(s, utils.Pubsalt)+"("+netInterface.Name+")")
 	}
 	return data
 }
@@ -102,11 +102,11 @@ func GenLicense(activeCode string, netTime bool, salts ...string) (ok bool, lic 
 		return false, "生成失败（1）", expTime
 	}
 	//fmt.Println(num)
-	var k = num * 2 + 2
+	var k = num*2 + 2
 	var dayStr string
 	for {
 		//fmt.Println(k)
-		dayStr += daySign[k-1:k]
+		dayStr += daySign[k-1 : k]
 
 		k -= 2
 		num--
@@ -120,7 +120,7 @@ func GenLicense(activeCode string, netTime bool, salts ...string) (ok bool, lic 
 		return false, "生成失败（2）", expTime
 	}
 	//fmt.Println(days)
-	day := math.Floor(float64(days * 35) / float64(12 * total) + 0.5)
+	day := math.Floor(float64(days*35)/float64(12*total) + 0.5)
 	//fmt.Println(day)
 	var currentTime time.Time
 	if netTime {
@@ -152,7 +152,7 @@ func GenActiveCode(acKey string, days int64, salts ...string) string {
 	var seed int64
 	for i, v := range []rune(activeCode) {
 		total += int64(v)
-		seed = seed + int64(v) * int64(i)
+		seed = seed + int64(v)*int64(i)
 	}
 	if total > 9999 {
 		total = 9999
@@ -163,7 +163,7 @@ func GenActiveCode(acKey string, days int64, salts ...string) string {
 	//fmt.Println(randStr)
 
 	//fmt.Println(days)
-	days = days * total / 5  + days * total / 7
+	days = days*total/5 + days*total/7
 	//fmt.Println(days)
 
 	var daySign string
@@ -194,7 +194,7 @@ func genActiveCode(acKey string, salt string) string {
 	var a string
 	for i, v := range runes {
 		x := utils.AnyToDecimal(string(v), 36)
-		a = a + strconv.Itoa(x+int(math.Pow(float64(x), float64(i%7))))
+		a = a + strconv.Itoa(int(x+int64(math.Pow(float64(x), float64(i%7)))))
 	}
-	return utils.Md5(a+salt)
+	return utils.Md5(a + salt)
 }
