@@ -5,7 +5,6 @@ go 1.23.4
 require (
 	github.com/aliyun/alibaba-cloud-sdk-go v1.63.24
 	github.com/baidubce/bce-sdk-go v0.9.192
-	github.com/iufansh/iuplugins v0.0.0-20231116074446-d449a6d7df3b
 	github.com/iufansh/iutils v0.0.0-20241218062802-3ba9a4f95a94
 	github.com/oleiade/lane v1.0.1
 	github.com/parnurzeal/gorequest v0.3.0

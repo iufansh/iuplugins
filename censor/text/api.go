@@ -2,7 +2,8 @@ package text
 
 import (
 	"fmt"
-	"github.com/iufansh/iuplugins/baidu"
+	"iuplugins/baidu"
+
 	"github.com/parnurzeal/gorequest"
 	"github.com/pkg/errors"
 )

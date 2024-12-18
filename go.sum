@@ -44,8 +44,6 @@ github.com/gopherjs/gopherjs v1.17.2/go.mod h1:pRRIvn/QzFLrKfvEz3qUuEhtE/zLCWfre
 github.com/gorilla/mux v1.8.1 h1:TuBL49tXwgrFYWhqrNgrUNEY92u81SPhu7sTdzQEiWY=
 github.com/gorilla/mux v1.8.1/go.mod h1:AKf9I4AEqPTmMytcMc0KkNouC66V3BtZ4qD5fmWSiMQ=
 github.com/iancoleman/strcase v0.3.0/go.mod h1:iwCmte+B7n89clKwxIoIXy/HfoL7AsD47ZCWhYzw7ho=
-github.com/iufansh/iuplugins v0.0.0-20231116074446-d449a6d7df3b h1:RCtS/779Y3REiXSUiAEbE9mnQItqOytVRys8rDyc/pA=
-github.com/iufansh/iuplugins v0.0.0-20231116074446-d449a6d7df3b/go.mod h1:oG6s7nRcrFxRUYmmT19zBLTOSk4w5QUsxOdPkavnbS0=
 github.com/iufansh/iutils v0.0.0-20241218062802-3ba9a4f95a94 h1:94qdMi67sN86rFpIThsTldxfvXMYIuCuXyksqNmH2x4=
 github.com/iufansh/iutils v0.0.0-20241218062802-3ba9a4f95a94/go.mod h1:JfpJwHpBmK7pnK3DCC8AZijq1LgEMClRck5mauP0zQg=
 github.com/jessevdk/go-flags v1.4.0/go.mod h1:4FA24M0QyGHXBuZZK/XkWh8h0e1EYbRYJSGM75WSRxI=

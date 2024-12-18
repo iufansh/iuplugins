@@ -3,7 +3,7 @@ package esqueue
 import (
 	"encoding/json"
 	"errors"
-	"github.com/iufansh/iuplugins/queue"
+	"iuplugins/queue"
 	"runtime"
 	"sync/atomic"
 )
