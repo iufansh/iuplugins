@@ -1,4 +1,4 @@
-module iuplugins
+module github.com/iufansh/iuplugins
 
 go 1.23.4
 
