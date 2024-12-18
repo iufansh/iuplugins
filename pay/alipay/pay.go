@@ -9,15 +9,16 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
-	utils "github.com/iufansh/iutils"
-	"github.com/parnurzeal/gorequest"
-	"github.com/pkg/errors"
-	"golang.org/x/net/html/charset"
 	"io"
 	"net/http"
 	"net/url"
 	"sort"
 	"strings"
+
+	utils "github.com/iufansh/iutils"
+	"github.com/parnurzeal/gorequest"
+	"github.com/pkg/errors"
+	"golang.org/x/net/html/charset"
 )
 
 func CheckService(w http.ResponseWriter, r *http.Request, getAliPubKeyAndDepPriKey func(appId string) (string, string), getDepPubKey func(appId string) string) error {

@@ -1,10 +1,11 @@
 package googleauth
 
 import (
-	"strconv"
-	"time"
 	"encoding/base32"
 	"fmt"
+	"strconv"
+	"time"
+
 	utils "github.com/iufansh/iutils"
 )
 

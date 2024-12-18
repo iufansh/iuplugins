@@ -1,11 +1,12 @@
 package wechat
 
 import (
-	"fmt"
-	"net/http"
-	"io/ioutil"
-	"errors"
 	"encoding/xml"
+	"errors"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+
 	utils "github.com/iufansh/iutils"
 )
 

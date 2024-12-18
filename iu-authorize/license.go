@@ -2,12 +2,13 @@ package iuauth
 
 import (
 	"fmt"
-	"strconv"
-	"net"
-	utils "github.com/iufansh/iutils"
-	"strings"
 	"math"
+	"net"
+	"strconv"
+	"strings"
 	"time"
+
+	utils "github.com/iufansh/iutils"
 )
 
 const defaultSalt  = "licgo"

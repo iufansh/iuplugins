@@ -6,10 +6,11 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"fmt"
-	utils "github.com/iufansh/iutils"
 	"net/url"
 	"sort"
 	"strings"
+
+	utils "github.com/iufansh/iutils"
 )
 
 // GenSign 产生签名
